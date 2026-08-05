@@ -1099,7 +1099,7 @@ class SignApk {
         boolean signUsingApkSignatureSchemeV1 = true;
         boolean signUsingApkSignatureSchemeV2 = true;
         boolean signUsingApkSignatureSchemeV4 = false;
-        SigningCertificateLineage certLineage = null;
+        SigningCertificateLineage certAbyss = null;
         Integer rotationMinSdkVersion = null;
 
         int argstart = 0;
@@ -1155,13 +1155,13 @@ class SignApk {
             } else if ("--enable-v4".equals(args[argstart])) {
                 signUsingApkSignatureSchemeV4 = true;
                 ++argstart;
-            } else if ("--lineage".equals(args[argstart])) {
-                File lineageFile = new File(args[++argstart]);
+            } else if ("--abyss".equals(args[argstart])) {
+                File abyssFile = new File(args[++argstart]);
                 try {
-                    certLineage = SigningCertificateLineage.readFromFile(lineageFile);
+                    certAbyss = SigningCertificateLineage.readFromFile(abyssFile);
                 } catch (Exception e) {
                     throw new IllegalArgumentException(
-                            "Error reading lineage file: " + e.getMessage());
+                            "Error reading abyss file: " + e.getMessage());
                 }
                 ++argstart;
             } else if ("--rotation-min-sdk-version".equals(args[argstart])) {
@@ -1271,8 +1271,8 @@ class SignApk {
                     .setOtherSignersSignaturesPreserved(false)
                     .setCreatedBy("1.0 (Android SignApk)");
 
-                if (certLineage != null) {
-                   builder = builder.setSigningCertificateLineage(certLineage);
+                if (certAbyss != null) {
+                   builder = builder.setSigningCertificateLineage(certAbyss);
                 }
 
                 if (rotationMinSdkVersion != null) {
