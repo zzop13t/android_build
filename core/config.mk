@@ -1363,12 +1363,13 @@ include $(BUILD_SYSTEM)/sysprop_config.mk
 # consistency with those defined in BoardConfig.mk files.
 include $(BUILD_SYSTEM)/android_soong_config_vars.mk
 
-ifneq ($(ABYSS_BUILD),)
-ifneq ($(wildcard device/lineage/sepolicy/common/sepolicy.mk),)
+# Abyss: 不再自动包含 device/lineage/sepolicy/common —— 它会带进 lineage_*_service 类型、
+# ro.lineage.* 属性上下文、hal_lineage_* 规则，这些在设备上都会被写进已编译的 .cil 文件，
+# 任何无 root 的应用都能读到。本 ROM 没有这些服务，去掉即可。
+ifneq ($(wildcard hardware/oplus/sepolicy/common/sepolicy.mk),)
 ## We need to be sure the global selinux policies are included
 ## last, to avoid accidental resetting by device configs
-$(eval include device/lineage/sepolicy/common/sepolicy.mk)
-endif
+$(eval include hardware/oplus/sepolicy/common/sepolicy.mk)
 endif
 
 # EMMA_INSTRUMENT is set to true when coverage is enabled. Creates a suffix to
